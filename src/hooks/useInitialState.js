@@ -15,16 +15,22 @@ const useInitialState = ()=>{
         });
     };
 
-    const removeFromCart = (payload)=>{
+    const removeFromCart = (indexValue)=>{ //indexValue es el valor de index o indice de cada producto, se usa 
+                                        // en vez de product para eliminar productos por su indice y no por el producto
+                                        //ya que si la función removeFromCart recibiera "product", al intentar eliminar
+                                        //se eliminarían todos los productos que son iguales, en vez de uno por uno
         setState({
             ...state,
-            cart:[]
+            cart: state.cart.filter((product, index) =>  
+            index !== indexValue), //la comparacion indica que salve a todos los elementos o productos que no tengan ese
+                                //valor de indice, elimninándolos y sólo dejando el resto de productos con indexValue distinto
         });
     }
 
     return{
         state,
-        addToCart
+        addToCart,
+        removeFromCart
     }
 }
 
