@@ -1,48 +1,39 @@
-import React from 'react';
-import '../styles/MyOrder.scss';
+import React, { useContext } from 'react';
+import OrderItem from '@components/OrderItem';
+import AppContext from '../context/AppContext';
+import '@styles/MyOrder.scss';
+import arrow from '@icons/flechita.svg';
 
-const   MyOrder =   ()=>{
-    return(
-        <div className="my-order">
-        <div className="my-order-container">
-          <h1 className="title">My order</h1>
-    
-          <div className="my-order-content">
-            <div className="order">
-              <p>
-                <span>03.25.21</span>
-                <span>6 articles</span>
-              </p>
-              <p>$560.00</p>
-            </div>
-    
-            <div className="shopping-cart">
-              <figure>
-                <img src="https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="bike" />
-              </figure>
-              <p>Bike</p>
-              <p>$30,00</p>
-            </div>
-    
-            <div className="shopping-cart">
-              <figure>
-                <img src="https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="bike"/>
-              </figure>
-              <p>Bike</p>
-              <p>$30,00</p>
-            </div>
-    
-            <div className="shopping-cart">
-              <figure>
-                <img src="https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="bike" />
-              </figure>
-              <p>Bike</p>
-              <p>$30,00</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+const MyOrder = () => {
+	const { state } = useContext(AppContext);
+
+  const sumTotal = ()=>{ //suma el total de los precios de los productos
+    const reducer = (accumalator, currentvalue) => accumalator + currentvalue.price;
+    const sum = state.cart.reduce(reducer, 0);
+    return sum;
+  }
+	return (
+		<aside className="MyOrder">
+			<div className="title-container">
+				<img src={arrow} alt="arrow" />
+				<p className="title">My order</p>
+			</div>
+			<div className="my-order-content">
+				{state.cart.map(product => (
+					<OrderItem product={product} key={`orderItem-${product.id}`} />
+				))}
+				<div className="order">
+					<p>
+						<span>Total</span>
+					</p>
+					<p>${sumTotal()}</p>
+				</div>
+				<button className="primary-button">
+					Checkout
+				</button>
+			</div>
+		</aside>
+	);
 }
 
-export  default MyOrder;
+export default MyOrder;
